@@ -2,25 +2,25 @@ from langchain_core.documents import Document
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
 import chromadb
-from models import DocumentRequest
 from uuid import uuid4
 from initialize import init_logger
+from config import settings
 
 
 logger = init_logger()
 
 class DBManager:
-    def __init__(self, document: DocumentRequest):
-        self.client = chromadb.PersistentClient(path=document.chroma_db_path)
+    def __init__(self, collection_name: str):
+        self.client = chromadb.PersistentClient(path=settings.chroma_db_path)
 
         self.embeddings = OllamaEmbeddings(
-            model = document.ollama_embedding_model,
-            base_url = document.ollama_embedding_url
+            model = settings.ollama_embedding_model,
+            base_url = settings.ollama_embedding_url
         )
 
         self.vector_store = Chroma(
             client = self.client,
-            collection_name = document.collection_name,
+            collection_name = collection_name,
             embedding_function = self.embeddings
         )
 
@@ -33,3 +33,12 @@ class DBManager:
         )
         self.vector_store.add_documents(documents=[doc], ids=[doc_id])
         return {"doc_id" : doc_id}
+
+    def get_documents(self, query: str, limit: int, metadata: dict):
+        results = self.vector_store.similarity_search(
+            query = query,
+            k = limit,
+            filter = metadata
+        )
+        return results
+

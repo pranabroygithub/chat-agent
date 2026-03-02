@@ -4,6 +4,7 @@ from models import ChatModelOptions
 import logging
 from loggers import LOGGING_CONFIG
 
+
 def init_llm(options: ChatModelOptions):
     llm = ChatOllama(
         base_url = settings.ollama_url,

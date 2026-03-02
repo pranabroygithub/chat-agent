@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import Any
 from uuid import uuid4
-from config import settings
 
 class ChatModelOptions(BaseModel):
     reasoning : bool = False
@@ -16,10 +15,14 @@ class Document(BaseModel):
     document: Any
     embeddings: float
 
-class DocumentRequest(BaseModel):
-    chroma_db_path: str = settings.chroma_db_path
+class AddDocumentRequest(BaseModel):
     collection_name: str
-    ollama_embedding_model: str = settings.ollama_embedding_model
     metadata: dict = {}
     document: Any
-    ollama_embedding_url : str = settings.ollama_embedding_url
+    limit: int = 5
+
+class GetDocumentRequest(BaseModel):
+    query: str
+    collection_name: str
+    metadata: dict = {}
+    limit: int = 5
