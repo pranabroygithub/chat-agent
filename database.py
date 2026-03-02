@@ -25,14 +25,14 @@ class DBManager:
         )
 
     def add_document(self, document: str, metadata: dict):
-        doc_id = str(uuid4())
+        id = str(uuid4())
         doc = Document(
             page_content = document,
             metadata = metadata,
-            id = doc_id
+            id = id
         )
-        self.vector_store.add_documents(documents=[doc], ids=[doc_id])
-        return {"doc_id" : doc_id}
+        self.vector_store.add_documents(documents=[doc], ids=[id])
+        return doc
 
     def get_documents(self, query: str, limit: int, metadata: dict):
         results = self.vector_store.similarity_search(
@@ -41,4 +41,24 @@ class DBManager:
             filter = metadata
         )
         return results
+
+    def update_document(self, id: str, document: str, metadata: dict):
+        if not self.find_by_ids([id]):
+            return None
+        doc = Document(
+            page_content = document,
+            metadata = metadata,
+            id = id
+        )
+        self.vector_store.update_documents(documents=[doc], ids=[id])
+        return doc
+
+    def delete_document(self, id: str):
+        if self.find_by_ids([id]):
+            self.vector_store.delete(ids=[id])
+            return 1
+        return None
+
+    def find_by_ids(self, ids: list):
+        return self.vector_store.get_by_ids(ids)
 

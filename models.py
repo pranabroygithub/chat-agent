@@ -11,18 +11,24 @@ class ChatRequest(BaseModel):
     chat_options: ChatModelOptions = ChatModelOptions()
 
 class Document(BaseModel):
-    doc_id: uuid4
+    id: uuid4
     document: Any
     embeddings: float
 
 class AddDocumentRequest(BaseModel):
     collection_name: str
-    metadata: dict = {}
     document: Any
     limit: int = 5
+    metadata: dict = {}
+
+class UpdateDocumentRequest(BaseModel):
+    id: str
+    collection_name: str
+    document: Any
+    metadata: dict
 
 class GetDocumentRequest(BaseModel):
     query: str
     collection_name: str
-    metadata: dict = {}
     limit: int = 5
+    metadata: dict = None
