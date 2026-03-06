@@ -8,6 +8,7 @@ class ChatModelOptions(BaseModel):
 class ChatRequest(BaseModel):
     user_prompt: str
     system_prompt: str
+    response_format: Any = None
     chat_options: ChatModelOptions = ChatModelOptions()
 
 class Document(BaseModel):

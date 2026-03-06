@@ -5,3 +5,5 @@ ollama
 fastapi[standard]
 pydantic
 langchain-chroma>=0.1.2
+langchain-text-splitters
+bs4
