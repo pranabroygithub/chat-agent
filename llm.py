@@ -32,7 +32,6 @@ def agent_chat(chat_request: ChatRequest, model: ChatOllama):
                 {"messages": [{"role": "user", "content": chat_request.user_prompt}]},
                 {"configurable": {"thread_id": "1"}}
             )
-    #logger.debug(f"Agent response = {result}")
     format_agent_response(result)
     return result
 

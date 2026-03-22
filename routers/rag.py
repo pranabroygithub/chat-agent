@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from models import AddDocumentRequest, GetDocumentRequest, UpdateDocumentRequest
 from initialize import init_logger
 from database import DBManager
+from chunking import html_chunking
 
 
 router = APIRouter(prefix="/document")
@@ -44,4 +45,13 @@ def find_by_id(id: str, collection_name: str):
     logger.info(f"request_params = {id}, collection_name = {collection_name}")
     db_manager = DBManager(collection_name)
     result = db_manager.find_by_ids([id])
+    return result
+
+@router.get("/chunk")
+def html_chunker(url: str, collection_name: str):
+    chunks = html_chunking(url)
+    db_manager = DBManager(collection_name)
+    for chunk in chunks:
+        result = db_manager.add_document(chunk.page_content, chunk.metadata)
+
     return result
