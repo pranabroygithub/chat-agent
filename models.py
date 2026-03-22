@@ -1,9 +1,10 @@
 from pydantic import BaseModel
-from typing import Any
+from typing import Any, Optional
 from uuid import uuid4
 
 class ChatModelOptions(BaseModel):
     reasoning : bool = False
+    collection_name: str = ""
 
 class ChatRequest(BaseModel):
     user_prompt: str
@@ -20,7 +21,7 @@ class AddDocumentRequest(BaseModel):
     collection_name: str
     document: Any
     limit: int = 5
-    metadata: dict = {}
+    metadata: dict = None
 
 class UpdateDocumentRequest(BaseModel):
     id: str
@@ -33,3 +34,7 @@ class GetDocumentRequest(BaseModel):
     collection_name: str
     limit: int = 5
     metadata: dict = None
+
+class AgentWithRagRequest(BaseModel):
+    document_request: Optional[GetDocumentRequest] = None
+    agent_request: ChatRequest
