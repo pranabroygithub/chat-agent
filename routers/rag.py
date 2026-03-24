@@ -19,7 +19,7 @@ def insert_document(document: AddDocumentRequest):
 def search_documents(document: GetDocumentRequest):
     logger.info(f"request_body = {document}")
     db_manager = DBManager(document.collection_name)
-    results = db_manager.get_documents(document.query, document.limit, document.metadata)
+    results = db_manager.get_documents(document.query, document.limit, document.metadata if document.metadata else None)
     return results
 
 @router.put("/update")

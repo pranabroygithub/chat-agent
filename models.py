@@ -21,7 +21,7 @@ class AddDocumentRequest(BaseModel):
     collection_name: str
     document: Any
     limit: int = 5
-    metadata: dict = None
+    metadata: dict = {}
 
 class UpdateDocumentRequest(BaseModel):
     id: str
@@ -33,7 +33,7 @@ class GetDocumentRequest(BaseModel):
     query: str
     collection_name: str
     limit: int = 5
-    metadata: dict = None
+    metadata: dict = {}
 
 class AgentWithRagRequest(BaseModel):
     document_request: Optional[GetDocumentRequest] = None
